@@ -1,5 +1,5 @@
 
-const Budget = require('../models/budget');
+const Budget = require('../models/Budget');
 
 // SET OR UPDATE MONTHLY BUDGET
 const setBudget = async (req, res) => {
