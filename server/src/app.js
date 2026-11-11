@@ -1,12 +1,21 @@
+
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+
+const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
+const expenseRoutes = require('./routes/expenseRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api/users', userRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/budgets', budgetRoutes);
 
 // Test route
 app.get('/', (req, res) => {
@@ -15,9 +24,15 @@ app.get('/', (req, res) => {
   });
 });
 
-// Server
-const PORT = process.env.PORT || 5000;
+// Start server after connecting to MongoDB
+const startServer = async () => {
+  await connectDB();
 
-app.listen(PORT, () => {
-  console.log(`ExpenseMate server running on port ${PORT}`);
-});
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
+    console.log(`ExpenseMate server running on port ${PORT}`);
+  });
+};
+
+startServer();
